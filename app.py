@@ -55,9 +55,9 @@ def inference(image, size):
     return result
 
 
-title = "Face Real ESRGAN UpScale: 2x 4x 8x"
-description = "This is an unofficial demo for Real-ESRGAN. Scales the resolution of a photo. This model shows better results on faces compared to the original version.<br>Telegram BOT: https://t.me/restoration_photo_bot"
-article = "<div style='text-align: center;'>Twitter <a href='https://twitter.com/DoEvent' target='_blank'>Max Skobeev</a> | <a href='https://huggingface.co/sberbank-ai/Real-ESRGAN' target='_blank'>Model card</a><div>"
+title = "RealESRGAN UpScale Model: 2x 4x 8x"
+description = "This model running on cpu so it takes bit time,so pls be patient :)"
+
 
 gr.Interface(inference,
              [gr.Image(type="pil"),
@@ -68,8 +68,6 @@ gr.Interface(inference,
              gr.Image(type="pil", label="Output"),
              title=title,
              description=description,
-             article=article,
-
              allow_flagging='never',
              cache_examples=False,
              ).queue(api_open=False).launch(show_error=True, show_api=False)

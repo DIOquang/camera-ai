@@ -1,0 +1,17 @@
+torch
+numpy
+opencv-python-headless
+setuptools
+Pillow
+torchvision
+addict
+future
+lmdb
+pyyaml
+requests
+scikit-image
+scipy
+tb-nightly
+tqdm
+yapf
+psutil

@@ -3,9 +3,7 @@ import numpy as np
 import glob
 from os.path import isfile, join
 import subprocess
-from IPython.display import clear_output
 import os
-from google.colab import files
 import shutil
 from io import BytesIO
 import io
@@ -60,7 +58,7 @@ def inference_image(image, size):
             model8.load_weights('weights/RealESRGAN_x8.pth', download=False)
             result = model2.predict(image.convert('RGB'))
 
-    print(f"Image size ({device}): {size} ... OK")
+    print(f"Frame of the Video size ({device}): {size} ... OK")
     return result
 
 custom_name = "input.mp4"
@@ -68,7 +66,7 @@ custom_name = "input.mp4"
 def save_video_input(video, custom_name):
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension
-        output_file_path = f"videos/{custom_name}.mp4"
+        output_file_path = f"/tmp/videos/{custom_name}.mp4"
 
         # Save the video input to the specified file path
         with open(output_file_path, 'wb') as output_file:
@@ -124,8 +122,8 @@ for filename in os.listdir(directory):
       try:
 
           # PATH TO STORE VIDEO FRAMES
-          if not os.path.exists('upload'):
-              os.makedirs('upload')
+          if not os.path.exists('/tmp/upload/'):
+              os.makedirs('/tmp/upload/')
 
       # if not created then raise error
       except OSError:
@@ -142,7 +140,7 @@ for filename in os.listdir(directory):
 
           if ret:
               # if video is still left continue creating images
-              name = 'upload/frame' + str(currentframe) + '.jpg'
+              name = '/tmp/upload/frame' + str(currentframe) + '.jpg'
 
               # writing the extracted images
               cv2.imwrite(name, frame)
@@ -166,31 +164,31 @@ for filename in os.listdir(directory):
       #apply super-resolution on all frames of a video
 
       # Specify the directory path
-      all_frames_path = "upload"
+      all_frames_path = "/tmp/upload/"
 
       # Get a list of all files in the directory
       file_names = os.listdir(all_frames_path)
 
       # process the files
       for file_name in file_names:
-        inference_image(f"upload/{file_name}")
+        inference_image(f"/tmp/upload/{file_name}")
 
 
       #convert super res frames to .avi
-      pathIn = 'results/restored_imgs/'
+      pathIn = '/tmp/results/restored_imgs/'
 
       zee = zee+1
       fName = "video"+str(zee)
       filenameVid = f"{fName}.avi"
 
-      pathOut = "results_videos/"+filenameVid
+      pathOut = "/tmp/results_videos/"+filenameVid
 
       convert_frames_to_video(pathIn, pathOut, fps)
 
 
       #convert .avi to .mp4
-      src = 'results_videos/'
-      dst = 'results_mp4_videos/'
+      src = '/tmp/results_videos/'
+      dst = '/tmp/results_mp4_videos/'
 
       for root, dirs, filenames in os.walk(src, topdown=False):
           #print(filenames)

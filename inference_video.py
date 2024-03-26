@@ -3,9 +3,7 @@ import numpy as np
 import glob
 from os.path import isfile, join
 import subprocess
-from IPython.display import clear_output
 import os
-from google.colab import files
 import shutil
 from io import BytesIO
 import io
@@ -13,18 +11,47 @@ import io
 IMAGE_FORMATS = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')
 
 
-model_scale = "2" #@param ["2", "4", "8"] {allow-input: false}
+def inference_image(image, size):
+    global model2
+    global model4
+    global model8
+    if image is None:
+        raise gr.Error("Image not uploaded")
 
-model = RealESRGAN(device, scale=int(model_scale))
-model.load_weights(f'weights/RealESRGAN_x{model_scale}.pth', download=False)
+    width, height = image.size
+    if width >= 5000 or height >= 5000:
+        raise gr.Error("The image is too large.")
 
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
 
-def process_input(filename):
-  result_image_path = os.path.join('results/restored_imgs', os.path.basename(filename))
-  image = Image.open(filename).convert('RGB')
-  sr_image = model.predict(np.array(image))
-  sr_image.save(result_image_path)
-  print(f'Finished! Frame of the Video saved to {result_image_path}')
+    if size == '2x':
+        try:
+            result = model2.predict(image.convert('RGB'))
+        except torch.cuda.OutOfMemoryError as e:
+            print(e)
+            model2 = RealESRGAN(device, scale=2)
+            model2.load_weights('weights/RealESRGAN_x2.pth', download=False)
+            result = model2.predict(image.convert('RGB'))
+    elif size == '4x':
+        try:
+            result = model4.predict(image.convert('RGB'))
+        except torch.cuda.OutOfMemoryError as e:
+            print(e)
+            model4 = RealESRGAN(device, scale=4)
+            model4.load_weights('weights/RealESRGAN_x4.pth', download=False)
+            result = model2.predict(image.convert('RGB'))
+    else:
+        try:
+            result = model8.predict(image.convert('RGB'))
+        except torch.cuda.OutOfMemoryError as e:
+            print(e)
+            model8 = RealESRGAN(device, scale=8)
+            model8.load_weights('weights/RealESRGAN_x8.pth', download=False)
+            result = model2.predict(image.convert('RGB'))
+
+    print(f"Image size ({device}): {size} ... OK")
+    return result
 
 
 # assign directory
@@ -120,7 +147,7 @@ for filename in os.listdir(directory):
 
       # process the files
       for file_name in file_names:
-        process_input(f"upload/{file_name}")
+        inference_image(f"upload/{file_name}")
 
 
       #convert super res frames to .avi

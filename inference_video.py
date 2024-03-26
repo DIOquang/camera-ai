@@ -186,6 +186,6 @@ for filename in os.listdir(directory):
                   inputfile = os.path.join(root, filename)
                   print('[INFO] 1',inputfile)
                   outputfile = os.path.join(dst, filename.lower().replace(_format, ".mp4"))
-                  subprocess.call(['ffmpeg', '-i', inputfile, outputfile])
+                  result_video = subprocess.call(['ffmpeg', '-i', inputfile, outputfile])
               except:
                   print("An exception occurred")

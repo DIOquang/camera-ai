@@ -56,6 +56,12 @@ def inference_image(image, size):
 
 
 
+def inference_video(video, size):
+    os.system("python inference_video.py")
+    return result_video
+    
+
+
 input_image = gr.Image(type='pil', label='Input Image')
 input_model_image = gr.Radio(['2x', '4x', '8x'], type="value", value="4x", label="Model Upscale/Enhance Type")
 submit_image_button = gr.Button('Submit')

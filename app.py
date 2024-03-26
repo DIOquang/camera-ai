@@ -12,7 +12,7 @@ model8 = RealESRGAN(device, scale=8)
 model8.load_weights('weights/RealESRGAN_x8.pth', download=True)
 
 
-def inference(image, size):
+def inference_image(image, size):
     global model2
     global model4
     global model8
@@ -55,19 +55,35 @@ def inference(image, size):
     return result
 
 
-title = "RealESRGAN UpScale Model: 2x 4x 8x"
-description = "This model running on cpu so it takes bit time,so pls be patient :)"
+
+input_image = gr.Image(type='pil', label='Input Image')
+input_model_image = gr.Radio(['2x', '4x', '8x'], type="value", value="4x", label="Model Upscale/Enhance Type")
+submit_image_button = gr.Button('Submit')
+output_image = gr.Image(type="filepath", label="Output Image")
+
+tab_img = gr.Interface(
+    fn=inference_image,
+    inputs=[input_image, input_model_image, face_enhance_image, outscale_image, fp32_image, extension_image],
+    outputs=output_image,
+    title="Real-ESRGAN Pytorch",
+    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your image, or click one of examples and choose the model. Read more at the links below. Please click submit only once <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"
+)
+
+input_video = gr.Video(type="filepath", label='Input Video')
+input_model_video = gr.Radio(['2x', '4x', '8x'], type="value", value="4x", label="Model Upscale/Enhance Type")
+submit_video_button = gr.Button('Submit')
+output_video = gr.Video(type="filepath", label='Output Video')
+
+tab_vid = gr.Interface(
+    fn=inference_video,
+    inputs=[input_video, input_model_video],
+    outputs=output_video,
+    title="Real-ESRGAN Pytorch",
+    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your video, or click one of examples and choose the model. Read more at the links below. Please click submit only once <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"
+)
+
+demo = gr.TabbedInterface([tab_img, tab_vid], ["Image", "Video"])
 
 
-gr.Interface(inference,
-             [gr.Image(type="pil"),
-              gr.Radio(['2x', '4x', '8x'],
-                       type="value",
-                       value='2x',
-                       label='Resolution model')],
-             gr.Image(type="pil", label="Output"),
-             title=title,
-             description=description,
-             allow_flagging='never',
-             cache_examples=False,
-             ).queue(api_open=False).launch(show_error=True, show_api=False)
+
+demo.launch(debug=True, show_error=True)

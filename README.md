@@ -1,5 +1,5 @@
 ---
-title: RealESRGAN Enhance Model
+title: RealESRGAN Pytirch
 emoji: 🔥
 colorFrom: indigo
 colorTo: red

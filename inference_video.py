@@ -61,12 +61,16 @@ def inference_image(image, size):
     print(f"Frame of the Video size ({device}): {size} ... OK")
     return result
 
+
 upload_folder = 'upload'
 result_folder = 'results'
 video_folder = 'videos'
 video_result_folder = 'results_videos'
 video_mp4_result_folder = 'results_mp4_videos'
 result_restored_imgs_folder = 'restored_imgs'
+
+os.mkdir('/tmp/')
+os.system("cd tmp")
 
 if os.path.isdir(upload_folder):
   print(upload_folder+" exists")
@@ -103,6 +107,8 @@ os.system("cd ..")
 if os.path.isdir(video_folder):
     shutil.rmtree(video_folder)
 os.mkdir(video_folder)
+
+os.system("cd ..")
 
 custom_name = "input.mp4"
 

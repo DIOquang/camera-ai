@@ -69,10 +69,10 @@ tab_img = gr.Interface(
     description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your image, or click one of examples and choose the model. Read more at the links below. Please click submit only once <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"
 )
 
-input_video = gr.Video(type="filepath", label='Input Video')
+input_video = gr.Video(label='Input Video')
 input_model_video = gr.Radio(['2x', '4x', '8x'], type="value", value="4x", label="Model Upscale/Enhance Type")
 submit_video_button = gr.Button('Submit')
-output_video = gr.Video(type="filepath", label='Output Video')
+output_video = gr.Video(label='Output Video')
 
 tab_vid = gr.Interface(
     fn=inference_video,

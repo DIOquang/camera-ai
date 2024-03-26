@@ -63,6 +63,22 @@ def inference_image(image, size):
     print(f"Image size ({device}): {size} ... OK")
     return result
 
+custom_name = "input.mp4"
+
+def save_video_input(video, custom_name):
+    try:
+        # Specify the desired output file path with the custom name and ".mp4" extension
+        output_file_path = f"videos/{custom_name}.mp4"
+
+        # Save the video input to the specified file path
+        with open(output_file_path, 'wb') as output_file:
+            output_file.write(video_input)
+        print(f"Video input saved as {output_file_path}")
+    except Exception as e:
+        print(f"Error saving video input: {str(e)}")
+
+
+
 
 # assign directory
 directory = 'videos' #PATH_WITH_INPUT_VIDEOS

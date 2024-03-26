@@ -1,5 +1,5 @@
 ---
-title: RealESRGAN Pytirch
+title: RealESRGAN Pytorch
 emoji: 🔥
 colorFrom: indigo
 colorTo: red

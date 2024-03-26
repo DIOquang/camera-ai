@@ -59,7 +59,7 @@ def inference_image(image, size):
 
 def inference_video(video, size):
     os.system("python inference_video.py")
-    return os.path.join('results_mp4_videos', 'input.mp4')
+    return os.path.join('/tmp/results_mp4_videos/', 'input.mp4')
     
 
 

@@ -63,7 +63,7 @@ output_image = gr.Image(type="filepath", label="Output Image")
 
 tab_img = gr.Interface(
     fn=inference_image,
-    inputs=[input_image, input_model_image, face_enhance_image, outscale_image, fp32_image, extension_image],
+    inputs=[input_image, input_model_image],
     outputs=output_image,
     title="Real-ESRGAN Pytorch",
     description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your image, or click one of examples and choose the model. Read more at the links below. Please click submit only once <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"

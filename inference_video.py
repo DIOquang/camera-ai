@@ -3,12 +3,22 @@ import numpy as np
 import glob
 from os.path import isfile, join
 import subprocess
+from IPython.display import clear_output
 import os
+from google.colab import files
 import shutil
 from io import BytesIO
 import io
+from RealESRGAN import RealESRGAN
+import torch
+from PIL import Image
+import numpy as np
+
 
 IMAGE_FORMATS = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')
+
+cap = cv2.VideoCapture(video)
+fps = cap.get(cv2.CAP_PROP_FPS)
 
 
 def inference_image(image, size):
@@ -158,8 +168,6 @@ for filename in os.listdir(directory):
       filenameVid = f"{fName}.avi"
 
       pathOut = "results_videos/"+filenameVid
-
-      fps = 25.0 #change this to FPS of your source video
 
       convert_frames_to_video(pathIn, pathOut, fps)
 

@@ -75,7 +75,7 @@ submit_video_button = gr.Button('Submit')
 output_video = gr.Video(label='Output Video')
 
 tab_vid = gr.Interface(
-    fn=inference_video,
+    fn=inference_image,
     inputs=[input_video, input_model_video],
     outputs=output_video,
     title="Real-ESRGAN Pytorch",

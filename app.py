@@ -61,9 +61,11 @@ def inference_image(image, size):
 
 def inference_video(video, size):
     _id = randint(1, 10000)
-    INPUT_DIR = "tmp/" + str(_id) + "/"
-    os.system("rm -rf " + INPUT_DIR)
-    os.system("mkdir " + INPUT_DIR)
+    INPUT_DIR = "tmp/" + str(_id)
+    if os.path.isdir(INPUT_DIR):
+        os.system("rm -rf " + INPUT_DIR)
+    else:
+        os.system("mkdir " + INPUT_DIR)
     os.system(f"cd {INPUT_DIR}")
     upload_folder = 'upload'
     result_folder = 'results'

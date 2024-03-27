@@ -62,28 +62,13 @@ def inference_image(image, size):
     return result
 
 
-custom_name = "input.mp4"
-
-def save_video_input(video, custom_name):
-    try:
-        # Specify the desired output file path with the custom name and ".mp4" extension
-        output_file_path = f"/tmp/videos/{custom_name}.mp4"
-
-        # Save the video input to the specified file path
-        with open(output_file_path, 'wb') as output_file:
-            output_file.write(video_input)
-        print(f"Video input saved as {output_file_path}")
-    except Exception as e:
-        print(f"Error saving video input: {str(e)}")
-
-
-
 
 # assign directory
 directory = 'videos' #PATH_WITH_INPUT_VIDEOS
 zee = 0
 
 def convert_frames_to_video(pathIn,pathOut,fps):
+    global INPUT_DIR
     frame_array = []
     files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f))]
     #for sorting the file names properly
@@ -123,8 +108,8 @@ for filename in os.listdir(directory):
       try:
 
           # PATH TO STORE VIDEO FRAMES
-          if not os.path.exists('/tmp/upload/'):
-              os.makedirs('/tmp/upload/')
+          if not os.path.exists(f'/{INPUT_DIR}/upload/'):
+              os.makedirs(f'/{INPUT_DIR}/upload/')
 
       # if not created then raise error
       except OSError:
@@ -141,7 +126,7 @@ for filename in os.listdir(directory):
 
           if ret:
               # if video is still left continue creating images
-              name = '/tmp/upload/frame' + str(currentframe) + '.jpg'
+              name = f'/{INPUT_DIR}/upload/frame' + str(currentframe) + '.jpg'
 
               # writing the extracted images
               cv2.imwrite(name, frame)
@@ -165,31 +150,31 @@ for filename in os.listdir(directory):
       #apply super-resolution on all frames of a video
 
       # Specify the directory path
-      all_frames_path = "/tmp/upload/"
+      all_frames_path = f"/{INPUT_DIR}/upload/"
 
       # Get a list of all files in the directory
       file_names = os.listdir(all_frames_path)
 
       # process the files
       for file_name in file_names:
-        inference_image(f"/tmp/upload/{file_name}")
+        inference_image(f"/{INPUT_DIR}/upload/{file_name}")
 
 
       #convert super res frames to .avi
-      pathIn = '/tmp/results/restored_imgs/'
+      pathIn = f'/{INPUT_DIR}/results/restored_imgs/'
 
       zee = zee+1
       fName = "video"+str(zee)
       filenameVid = f"{fName}.avi"
 
-      pathOut = "/tmp/results_videos/"+filenameVid
+      pathOut = f"/{INPUT_DIR}/results_videos/"+filenameVid
 
       convert_frames_to_video(pathIn, pathOut, fps)
 
 
       #convert .avi to .mp4
-      src = '/tmp/results_videos/'
-      dst = '/tmp/results_mp4_videos/'
+      src = f'/{INPUT_DIR}/results_videos/'
+      dst = f'/{INPUT_DIR}/results_mp4_videos/'
 
       for root, dirs, filenames in os.walk(src, topdown=False):
           #print(filenames)

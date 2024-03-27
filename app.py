@@ -68,14 +68,13 @@ def inference_video(video, size):
     else:
         # Create the directory, equivalent to 'mkdir -p'
         os.makedirs(INPUT_DIR, exist_ok=True)
-    os.system(f"cd {INPUT_DIR}")
+    os.chdir(INPUT_DIR)
     upload_folder = 'upload'
     result_folder = 'results'
     video_folder = 'videos'
     video_result_folder = 'results_videos'
     video_mp4_result_folder = 'results_mp4_videos'
     result_restored_imgs_folder = 'restored_imgs'
-    os.system(f"cd {INPUT_DIR}")
     if os.path.isdir(upload_folder):
         print(upload_folder+" exists")
     else:
@@ -101,17 +100,17 @@ def inference_video(video, size):
     else:
         os.system("mkdir " + result_folder)
     
-    os.system("cd results")
+    os.chdir("results")
     if os.path.isdir(result_restored_imgs_folder):
         print(result_restored_imgs_folder+" exists")
     else:
         os.system("mkdir " + result_restored_imgs_folder)
-    os.system("cd ..")
+    os.chdir("".."")
     
     if os.path.isdir(video_folder):
         shutil.rmtree(video_folder)
     os.system("mkdir " + video_folder)
-    os.system("cd ..")
+    os.chdir("..")
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension
         output_file_path = f"/{INPUT_DIR}/videos/input.mp4"

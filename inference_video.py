@@ -62,54 +62,6 @@ def inference_image(image, size):
     return result
 
 
-upload_folder = 'upload'
-result_folder = 'results'
-video_folder = 'videos'
-video_result_folder = 'results_videos'
-video_mp4_result_folder = 'results_mp4_videos'
-result_restored_imgs_folder = 'restored_imgs'
-
-os.mkdir('/tmp/')
-os.system("cd tmp")
-
-if os.path.isdir(upload_folder):
-  print(upload_folder+" exists")
-else :
-  os.mkdir(upload_folder)
-
-if os.path.isdir(video_folder):
-  print(video_folder+" exists")
-else :
-  os.mkdir(video_folder)
-
-if os.path.isdir(video_result_folder):
-  print(video_result_folder+" exists")
-else :
-  os.mkdir(video_result_folder)
-
-if os.path.isdir(video_mp4_result_folder):
-  print(video_mp4_result_folder+" exists")
-else :
-  os.mkdir(video_mp4_result_folder)
-
-if os.path.isdir(result_folder):
-  print(result_folder+" exists")
-else :
-  os.mkdir(result_folder)
-
-os.system("cd results")
-if os.path.isdir(result_restored_imgs_folder):
-  print(result_restored_imgs_folder+" exists")
-else :
-  os.mkdir(result_restored_imgs_folder)
-os.system("cd ..")
-
-if os.path.isdir(video_folder):
-    shutil.rmtree(video_folder)
-os.mkdir(video_folder)
-
-os.system("cd ..")
-
 custom_name = "input.mp4"
 
 def save_video_input(video, custom_name):

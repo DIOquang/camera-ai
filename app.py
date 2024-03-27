@@ -64,7 +64,7 @@ def inference_video(video, size):
     INPUT_DIR = "/tmp/" + str(_id) + "/"
     os.system("rm -rf " + INPUT_DIR)
     os.system("mkdir " + INPUT_DIR)
-    os.system(f"cd {INPUT_DIR")
+    os.system(f"cd {INPUT_DIR}")
     upload_folder = 'upload'
     result_folder = 'results'
     video_folder = 'videos'

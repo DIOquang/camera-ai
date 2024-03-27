@@ -4,6 +4,7 @@ from RealESRGAN import RealESRGAN
 import gradio as gr
 import os
 from random import randint
+import shutil
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model2 = RealESRGAN(device, scale=2)

@@ -61,7 +61,7 @@ def inference_image(image, size):
 
 def inference_video(video, size):
     _id = randint(1, 10000)
-    INPUT_DIR = "tmp/" + str(_id)
+    INPUT_DIR = "tmp"
     # Check if the directory exists, if so remove it
     if os.path.exists(INPUT_DIR):
         shutil.rmtree(INPUT_DIR)

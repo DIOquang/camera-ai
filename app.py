@@ -109,7 +109,7 @@ def inference_video(video, size):
     os.system("cd ..")
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension
-        output_file_path = f"/tmp/videos/{custom_name}.mp4"
+        output_file_path = f"/{INPUT_DIR}/videos/{custom_name}.mp4"
 
         # Save the video input to the specified file path
         with open(output_file_path, 'wb') as output_file:

@@ -15,9 +15,6 @@ import numpy as np
 
 IMAGE_FORMATS = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')
 
-cap = cv2.VideoCapture(video)
-fps = cap.get(cv2.CAP_PROP_FPS)
-
 
 def inference_image(image, size):
     global model2
@@ -69,6 +66,8 @@ zee = 0
 
 def convert_frames_to_video(pathIn,pathOut,fps):
     global INPUT_DIR
+    cap = cv2.VideoCapture(f'/{INPUT_DIR}/videos/input.mp4')
+    fps = cap.get(cv2.CAP_PROP_FPS)
     frame_array = []
     files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f))]
     #for sorting the file names properly

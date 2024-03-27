@@ -64,8 +64,16 @@ def inference_video(video, size):
     os.system("rm -rf " + INPUT_DIR)
     os.system("mkdir " + INPUT_DIR)
     input_image_path = os.path.join(INPUT_DIR, 'input.jpg')
-    video.save(input_image_path)
-    video.save(INPUT_DIR + "input.mp4", "MP4")
+    try:
+        # Specify the desired output file path with the custom name and ".mp4" extension
+        output_file_path = f"/tmp/videos/{custom_name}.mp4"
+
+        # Save the video input to the specified file path
+        with open(output_file_path, 'wb') as output_file:
+            output_file.write(video)
+        print(f"Video input saved as {output_file_path}")
+    except Exception as e:
+        print(f"Error saving video input: {str(e)}")
     os.system("python inference_video.py")
     return os.path.join('/tmp/results_mp4_videos/', 'input.mp4')
     

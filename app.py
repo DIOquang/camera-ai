@@ -105,7 +105,7 @@ def inference_video(video, size):
         print(result_restored_imgs_folder+" exists")
     else:
         os.system("mkdir " + result_restored_imgs_folder)
-    os.chdir("".."")
+    os.chdir("..)
     
     if os.path.isdir(video_folder):
         shutil.rmtree(video_folder)

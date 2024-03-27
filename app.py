@@ -74,38 +74,38 @@ def inference_video(video, size):
     if os.path.isdir(upload_folder):
         print(upload_folder+" exists")
     else:
-        os.mkdir(upload_folder)
+        os.system("mkdir " + upload_folder)
     
     if os.path.isdir(video_folder):
         print(video_folder+" exists")
     else:
-        os.mkdir(video_folder)
+        os.system("mkdir " + video_folder)
     
     if os.path.isdir(video_result_folder):
         print(video_result_folder+" exists")
     else:
-        os.mkdir(video_result_folder)
+        os.system("mkdir " + video_result_folder)
         
     if os.path.isdir(video_mp4_result_folder):
         print(video_mp4_result_folder+" exists")
     else:
-        os.mkdir(video_mp4_result_folder)
+        os.system("mkdir " + video_mp4_result_folder)
     
     if os.path.isdir(result_folder):
         print(result_folder+" exists")
     else:
-        os.mkdir(result_folder)
+        os.system("mkdir " + result_folder)
     
     os.system("cd results")
     if os.path.isdir(result_restored_imgs_folder):
         print(result_restored_imgs_folder+" exists")
     else:
-        os.mkdir(result_restored_imgs_folder)
+        os.system("mkdir " + result_restored_imgs_folder)
     os.system("cd ..")
     
     if os.path.isdir(video_folder):
         shutil.rmtree(video_folder)
-    os.mkdir(video_folder)
+    os.system("mkdir " + video_folder)
     os.system("cd ..")
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension

@@ -3,6 +3,7 @@ from PIL import Image
 from RealESRGAN import RealESRGAN
 import gradio as gr
 import os
+from random import randint
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model2 = RealESRGAN(device, scale=2)
@@ -58,6 +59,13 @@ def inference_image(image, size):
 
 
 def inference_video(video, size):
+    _id = randint(1, 10000)
+    INPUT_DIR = "/tmp/" + str(_id) + "/"
+    os.system("rm -rf " + INPUT_DIR)
+    os.system("mkdir " + INPUT_DIR)
+    input_image_path = os.path.join(INPUT_DIR, 'input.jpg')
+    video.save(input_image_path)
+    video.save(INPUT_DIR + "input.mp4", "MP4")
     os.system("python inference_video.py")
     return os.path.join('/tmp/results_mp4_videos/', 'input.mp4')
     

@@ -72,41 +72,18 @@ def inference_video(video, size):
     video_mp4_result_folder = 'results_mp4_videos'
     result_restored_imgs_folder = 'restored_imgs'
     
-    if os.path.isdir(upload_folder):
-        print(upload_folder+" exists")
-    else:
-        os.makedirs(upload_folder, exist_ok=True)
+    os.makedirs(upload_folder, exist_ok=True)
     
-    if os.path.isdir(video_folder):
-        print(video_folder+" exists")
-    else:
-        os.makedirs(video_folder, exist_ok=True)
+    os.makedirs(video_folder, exist_ok=True)
     
-    if os.path.isdir(video_result_folder):
-        print(video_result_folder+" exists")
-    else:
-        os.makedirs(video_result_folder, exist_ok=True)
+    os.makedirs(video_result_folder, exist_ok=True)
         
-    if os.path.isdir(video_mp4_result_folder):
-        print(video_mp4_result_folder+" exists")
-    else:
-        os.makedirs(video_mp4_result_folder, exist_ok=True)
+    os.makedirs(video_mp4_result_folder, exist_ok=True)
     
-    if os.path.isdir(result_folder):
-        print(result_folder+" exists")
-    else:
-        os.makedirs(result_folder, exist_ok=True)
+    os.makedirs(result_folder, exist_ok=True)
     
     os.chdir("results")
-    if os.path.isdir(result_restored_imgs_folder):
-        print(result_restored_imgs_folder+" exists")
-    else:
-        os.makedirs(result_restored_imgs_folder, exist_ok=True)
-    os.chdir("..")
-    
-    if os.path.isdir(video_folder):
-        shutil.rmtree(video_folder)
-    os.makedirs(video_folder, exist_ok=True)
+    os.makedirs(result_restored_imgs_folder, exist_ok=True)
     os.chdir("..")
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension

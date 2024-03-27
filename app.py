@@ -62,12 +62,7 @@ def inference_image(image, size):
 def inference_video(video, size):
     _id = randint(1, 10000)
     INPUT_DIR = "tmp"
-    # Check if the directory exists, if so remove it
-    if os.path.exists(INPUT_DIR):
-        shutil.rmtree(INPUT_DIR)
-    else:
-        # Create the directory, equivalent to 'mkdir -p'
-        os.makedirs(INPUT_DIR, exist_ok=True)
+    os.makedirs(INPUT_DIR, exist_ok=True)
     os.chdir(INPUT_DIR)
     
     upload_folder = 'upload'

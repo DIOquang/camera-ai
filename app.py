@@ -69,47 +69,49 @@ def inference_video(video, size):
         # Create the directory, equivalent to 'mkdir -p'
         os.makedirs(INPUT_DIR, exist_ok=True)
     os.chdir(INPUT_DIR)
+    
     upload_folder = 'upload'
     result_folder = 'results'
     video_folder = 'videos'
     video_result_folder = 'results_videos'
     video_mp4_result_folder = 'results_mp4_videos'
     result_restored_imgs_folder = 'restored_imgs'
+    
     if os.path.isdir(upload_folder):
         print(upload_folder+" exists")
     else:
-        os.system("mkdir " + upload_folder)
+        os.makedirs(upload_folder, exist_ok=True)
     
     if os.path.isdir(video_folder):
         print(video_folder+" exists")
     else:
-        os.system("mkdir " + video_folder)
+        os.makedirs(video_folder, exist_ok=True)
     
     if os.path.isdir(video_result_folder):
         print(video_result_folder+" exists")
     else:
-        os.system("mkdir " + video_result_folder)
+        os.makedirs(video_result_folder, exist_ok=True)
         
     if os.path.isdir(video_mp4_result_folder):
         print(video_mp4_result_folder+" exists")
     else:
-        os.system("mkdir " + video_mp4_result_folder)
+        os.makedirs(video_mp4_result_folder, exist_ok=True)
     
     if os.path.isdir(result_folder):
         print(result_folder+" exists")
     else:
-        os.system("mkdir " + result_folder)
+        os.makedirs(result_folder, exist_ok=True)
     
     os.chdir("results")
     if os.path.isdir(result_restored_imgs_folder):
         print(result_restored_imgs_folder+" exists")
     else:
-        os.system("mkdir " + result_restored_imgs_folder)
+        os.makedirs(result_restored_imgs_folder, exist_ok=True)
     os.chdir("..")
     
     if os.path.isdir(video_folder):
         shutil.rmtree(video_folder)
-    os.system("mkdir " + video_folder)
+    os.makedirs(video_folder, exist_ok=True)
     os.chdir("..")
     try:
         # Specify the desired output file path with the custom name and ".mp4" extension
@@ -121,6 +123,8 @@ def inference_video(video, size):
         print(f"Video input saved as {output_file_path}")
     except Exception as e:
         print(f"Error saving video input: {str(e)}")
+
+    os.chdir("..")
     os.system("python inference_video.py")
     return os.path.join(f'/{INPUT_DIR}/results_mp4_videos/', 'input.mp4')
     

@@ -60,7 +60,7 @@ def inference_image(image, size):
 
 def inference_video(video, size):
     _id = randint(1, 10000)
-    INPUT_DIR = "/tmp" + str(_id) + "/"
+    INPUT_DIR = "/tmp/" + str(_id) + "/"
     os.system("rm -rf " + INPUT_DIR)
     os.system("mkdir " + INPUT_DIR)
     upload_folder = 'upload'
@@ -69,8 +69,7 @@ def inference_video(video, size):
     video_result_folder = 'results_videos'
     video_mp4_result_folder = 'results_mp4_videos'
     result_restored_imgs_folder = 'restored_imgs'
-    os.mkdir('/tmp/')
-    os.system("cd tmp")
+    os.system(f"cd {INPUT_DIR}")
     if os.path.isdir(upload_folder):
         print(upload_folder+" exists")
     else:

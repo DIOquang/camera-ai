@@ -118,7 +118,7 @@ def inference_video(video, size):
     except Exception as e:
         print(f"Error saving video input: {str(e)}")
     os.system("python inference_video.py")
-    return os.path.join('/tmp/results_mp4_videos/', 'input.mp4')
+    return os.path.join(f'/{INPUT_DIR}/results_mp4_videos/', 'input.mp4')
     
 
 

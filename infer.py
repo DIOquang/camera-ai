@@ -26,7 +26,7 @@ def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
 
 def infer_video(video_filepath: str, size_modifier: int) -> str:
     # Extract audio from the original video file
-    audio = cv2.AudioCapture(video_filepath)
+    audio = cv.AudioCapture(video_filepath)
     audio_data = np.frombuffer(audio.readAll(), dtype=np.int16)
     audio_array = np.array(audio_data, dtype=np.int16)
     

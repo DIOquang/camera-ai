@@ -5,6 +5,8 @@ from RealESRGAN import RealESRGAN
 import tempfile
 import numpy as np
 import tqdm
+import pydub
+from pydub import AudioSegment
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

@@ -25,16 +25,16 @@ def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
     return result
 
 def infer_video(video_filepath: str, size_modifier: int) -> str:
-    # Extract audio from the original video file
-    audio = cv.AudioCapture(video_filepath)
-    audio_data = np.frombuffer(audio.readAll(), dtype=np.int16)
-    audio_array = np.array(audio_data, dtype=np.int16)
-    
     model = RealESRGAN(device, scale=size_modifier)
     model.load_weights(f'weights/RealESRGAN_x{size_modifier}.pth', download=False)
-
-    cap = cv.VideoCapture(video_filepath)
     
+    # Extract audio from the original video file
+    audio = AudioSegment.from_file(video_filepath, format=video_filepath.split('.')[-1])
+    audio_array = np.array(audio.get_array_of_samples())
+
+    # Create a VideoCapture object for the video file
+    cap = cv2.VideoCapture(video_filepath)
+
     # Create a temporary file for the output video
     tmpfile = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
     vid_output = tmpfile.name

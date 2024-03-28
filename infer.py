@@ -7,6 +7,7 @@ import numpy as np
 import tqdm
 import pydub
 from pydub import AudioSegment
+from moviepy.editor import VideoFileClip, AudioFileClip
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -31,7 +32,7 @@ def infer_video(video_filepath: str, size_modifier: int) -> str:
     model.load_weights(f'weights/RealESRGAN_x{size_modifier}.pth', download=False)
     
     # Extract audio from the original video file
-    audio = AudioSegment.from_file(video_filepath, format=video_filepath.split('.')[-1])
+    audio = AudioSegment.from_file(video_filepath, format="mp4")
     audio_array = np.array(audio.get_array_of_samples())
 
     # Create a VideoCapture object for the video file
@@ -75,10 +76,11 @@ def infer_video(video_filepath: str, size_modifier: int) -> str:
     vid_writer.release()
 
     # Create a new VideoFileClip object from the output video
-    output_clip = mpy.VideoFileClip(vid_output)
+    output_clip = VideoFileClip(vid_output)
 
     # Add the audio back to the output video
-    output_clip = output_clip.set_audio(mpy.AudioFileClip(video_filepath, fps=output_clip.fps))
+    audio_clip = AudioFileClip(f"{video_filepath.split('.')[0]}.wav", fps=output_clip.fps)
+    output_clip = output_clip.set_audio(audio_clip)
 
     # Save the output video to a new file
     output_clip.write_videofile(f'output_{video_filepath}')

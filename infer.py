@@ -4,7 +4,7 @@ import torch
 from RealESRGAN import RealESRGAN
 import tempfile
 import numpy as np
-import tqdm
+from tqdm import tqdm
 import pydub
 from pydub import AudioSegment
 from moviepy.editor import VideoFileClip, AudioFileClip
@@ -53,7 +53,7 @@ def infer_video(video_filepath: str, size_modifier: int) -> str:
 
     # Process each frame of the video and write it to the output video
     n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    for i in tqdm(range(n_frames)):
+    for i in tqdm.tqdm(range(n_frames)):
         # Read the next frame
         ret, frame = cap.read()
         if not ret:

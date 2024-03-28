@@ -16,4 +16,4 @@ tb-nightly
 tqdm
 yapf
 psutil
-ffmpeg
+ffmpeg-python

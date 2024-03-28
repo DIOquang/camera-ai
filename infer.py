@@ -1,5 +1,5 @@
 from PIL import Image
-import cv2 as cv
+import cv2
 import torch
 from RealESRGAN import RealESRGAN
 import tempfile

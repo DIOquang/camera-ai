@@ -16,3 +16,5 @@ tb-nightly
 tqdm
 yapf
 psutil
+pydub
+moviepy

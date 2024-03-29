@@ -10,7 +10,7 @@ import ffmpeg
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def infer_image(img: Image.Image, size_modifier: str) -> Image.Image:
+def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
     if img is None:
         raise Exception("Image not uploaded")
     
@@ -19,7 +19,6 @@ def infer_image(img: Image.Image, size_modifier: str) -> Image.Image:
     if width >= 5000 or height >= 5000:
         raise Exception("The image is too large.")
 
-    size_modifier = int(size_modifier)  # Convert size_modifier to an integer
     model = RealESRGAN(device, scale=size_modifier)
     model.load_weights(f'weights/RealESRGAN_x{size_modifier}.pth', download=False)
 

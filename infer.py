@@ -36,9 +36,14 @@ def infer_video(video_filepath: str, size_modifier: int) -> str:
     vid_output = tmpfile.name
     tmpfile.close()
 
-    # Extract audio from the input video
-    audio_file = video_filepath.replace(".mp4", ".wav")
-    ffmpeg.input(video_filepath).output(audio_file, format='wav', ac=1).run(overwrite_output=True)
+    # Check if the input video has an audio stream
+    probe = ffmpeg.probe(video_filepath)
+    has_audio = any(stream['codec_type'] == 'audio' for stream in probe['streams'])
+
+    if has_audio:
+        # Extract audio from the input video
+        audio_file = video_filepath.replace(".mp4", ".wav")
+        ffmpeg.input(video_filepath).output(audio_file, format='wav', ac=1).run(overwrite_output=True)
 
     vid_writer = cv.VideoWriter(
         vid_output,
@@ -66,12 +71,13 @@ def infer_video(video_filepath: str, size_modifier: int) -> str:
 
     vid_writer.release()
 
-    # Re-encode the video with the modified audio
-    ffmpeg.input(vid_output).output(video_filepath.replace(".mp4", "_upscaled.mp4"), vcodec='libx264', acodec='aac', audio_bitrate='320k').run(overwrite_output=True)
+    if has_audio:
+        # Re-encode the video with the modified audio
+        ffmpeg.input(vid_output).output(video_filepath.replace(".mp4", "_upscaled.mp4"), vcodec='libx264', acodec='aac', audio_bitrate='320k').run(overwrite_output=True)
 
-    # Replace the original audio with the upscaled audio
-    ffmpeg.input(audio_file).output(video_filepath.replace(".mp4", "_upscaled.mp4"), acodec='aac', audio_bitrate='320k').run(overwrite_output=True)
+        # Replace the original audio with the upscaled audio
+        ffmpeg.input(audio_file).output(video_filepath.replace(".mp4", "_upscaled.mp4"), acodec='aac', audio_bitrate='320k').run(overwrite_output=True)
 
     print(f"Video file : {video_filepath}")
 
-    return vid_output.replace(".mp4", "_upscaled.mp4")
+    return vid_output.replace(".mp4", "_upscaled.mp4") if has_audio else vid_output

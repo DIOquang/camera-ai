@@ -12,7 +12,10 @@ tab_img = gr.Interface(
     inputs=[input_image, input_model_image],
     outputs=output_image,
     title="Real-ESRGAN Pytorch",
-    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your image and choose the model. Read more at the links below. Please click submit only once <br>Credits: [Nick088](https://linktr.ee/Nick088), Xinntao, Tencent, Geeve George, ai-forever, daroche <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"
+    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your image and choose the model. Read more at the links below. Please click submit only once <br>Credits: [Nick088](https://linktr.ee/Nick088), Xinntao, Tencent, Geeve George, ai-forever, daroche <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>",
+    examples=[
+        ["test 1900.jpg", "4"]
+    ]
 )
 
 input_video = gr.Video(label='Input Video')
@@ -25,7 +28,10 @@ tab_vid = gr.Interface(
     inputs=[input_video, input_model_video],
     outputs=output_video,
     title="Real-ESRGAN Pytorch",
-    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your video and choose the model. Read more at the links below. Please click submit only once <br>Credits: [Nick088](https://linktr.ee/Nick088), Xinntao, Tencent, Geeve George, ai-forever, daroche <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>"
+    description="Gradio UI for Real-ESRGAN Pytorch version. To use it, simply upload your video and choose the model. Read more at the links below. Please click submit only once <br>Credits: [Nick088](https://linktr.ee/Nick088), Xinntao, Tencent, Geeve George, ai-forever, daroche <br><p style='text-align: center'><a href='https://arxiv.org/abs/2107.10833'>Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data</a> | <a href='https://github.com/ai-forever/Real-ESRGAN'>Github Repo</a></p>",
+    examples=[
+        ["1900.mp4", "2"]
+    ]
 )
 
 demo = gr.TabbedInterface([tab_img, tab_vid], ["Image", "Video"])

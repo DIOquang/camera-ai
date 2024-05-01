@@ -30,4 +30,4 @@ tab_vid = gr.Interface(
 
 demo = gr.TabbedInterface([tab_img, tab_vid], ["Image", "Video"])
 
-demo.launch(debug=True, show_error=True)
+demo.launch(debug=True, show_error=True, share=True)

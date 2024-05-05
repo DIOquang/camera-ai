@@ -1,6 +1,6 @@
 ---
 title: RealESRGAN Pytorch
-emoji: 🔥
+emoji: 🔥📹
 colorFrom: indigo
 colorTo: red
 sdk: gradio

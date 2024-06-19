@@ -11,7 +11,7 @@ import spaces
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-@spaces.GPU(duration=60 * 2)
+@spaces.GPU(duration=60)
 def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
     if img is None:
         raise Exception("Image not uploaded")
@@ -28,7 +28,7 @@ def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
     print(f"Image size ({device}): {size_modifier} ... OK")
     return result
 
-@spaces.GPU(duration=60 * 5)
+@spaces.GPU(duration=270)
 def infer_video(video_filepath: str, size_modifier: int) -> str:
     model = RealESRGAN(device, scale=size_modifier)
     model.load_weights(f'weights/RealESRGAN_x{size_modifier}.pth', download=False)

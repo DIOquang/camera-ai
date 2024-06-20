@@ -28,7 +28,7 @@ def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
     print(f"Image size ({device}): {size_modifier} ... OK")
     return result
 
-@spaces.GPU(duration=270)
+@spaces.GPU(duration=300)
 def infer_video(video_filepath: str, size_modifier: int) -> str:
     model = RealESRGAN(device, scale=size_modifier)
     model.load_weights(f'weights/RealESRGAN_x{size_modifier}.pth', download=False)

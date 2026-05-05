@@ -6,8 +6,19 @@
 set -e
 
 echo "=== [1/5] Installing Python dependencies ==="
+# Install PyTorch with CUDA first
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118 -q
-pip install -r requirements.txt -q
+
+# Install gradio stack (pins gradio-client which drags in old huggingface-hub)
+pip install "gradio==4.44.1" "gradio-client==1.3.0" "starlette<0.38.0" "fastapi<0.113.0" -q
+
+# Force reinstall huggingface-hub to a version that satisfies BOTH gradio and transformers
+pip install "huggingface_hub>=1.5.0" -q --force-reinstall
+
+# Install remaining deps
+pip install gradio-image-prompter==0.1.0 -q
+pip install facexlib basicsr realesrgan gfpgan -q
+pip install numpy opencv-python-headless Pillow scikit-image requests tqdm pyyaml scipy addict future lmdb setuptools ffmpeg-python psutil -q
 
 echo "=== [2/5] Installing basicsr from local source ==="
 cd basicsr-1.4.2

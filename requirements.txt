@@ -20,7 +20,7 @@ realesrgan
 gfpgan
 
 # Utilities
-huggingface_hub<0.26.0
+huggingface_hub
 requests
 tqdm
 pyyaml

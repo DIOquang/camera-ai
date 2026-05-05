@@ -49,31 +49,38 @@ echo "=== [4/5] Downloading model weights ==="
 mkdir -p weights weights/CodeFormer weights/facelib
 
 # RealESRGAN
-[ -f weights/RealESRGAN_x2.pth ] || curl -L -# "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth" -o weights/RealESRGAN_x2.pth
-[ -f weights/RealESRGAN_x4.pth ] || curl -L -# "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth" -o weights/RealESRGAN_x4.pth
-[ -f weights/RealESRGAN_x8.pth ] || curl -L -# "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x8.pth" -o weights/RealESRGAN_x8.pth
+[ -f weights/RealESRGAN_x2.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth" -o weights/RealESRGAN_x2.pth --progress-bar
+[ -f weights/RealESRGAN_x4.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth" -o weights/RealESRGAN_x4.pth --progress-bar
+[ -f weights/RealESRGAN_x8.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x8.pth" -o weights/RealESRGAN_x8.pth --progress-bar
 
-# RetinaFace + ParseNet (for facexlib)
-FACELIB_DIR=$(python -c "import facexlib; import os; print(os.path.join(os.path.dirname(facexlib.__file__), 'weights'))")
+# CodeFormer weights — download directly (no Python script needed)
+[ -f weights/codeformer.pth ] || curl -L "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth" -o weights/codeformer.pth --progress-bar
+
+# facelib weights (for CodeFormer & RetinaFace)
+[ -f weights/facelib/detection_Resnet50_Final.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth" -o weights/facelib/detection_Resnet50_Final.pth --progress-bar
+[ -f weights/facelib/parsing_parsenet.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth" -o weights/facelib/parsing_parsenet.pth --progress-bar
+[ -f weights/facelib/detection_mobilenet0.25_Final.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_mobilenet0.25_Final.pth" -o weights/facelib/detection_mobilenet0.25_Final.pth --progress-bar
+
+# Copy facelib weights to facexlib package dir so it can find them at runtime
+FACELIB_DIR=$(python -c "import facexlib, os; print(os.path.join(os.path.dirname(facexlib.__file__), 'weights'))")
 mkdir -p "$FACELIB_DIR"
-[ -f "$FACELIB_DIR/detection_Resnet50_Final.pth" ] || curl -L -k -# "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth" -o "$FACELIB_DIR/detection_Resnet50_Final.pth"
-[ -f "$FACELIB_DIR/parsing_parsenet.pth" ] || curl -L -k -# "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth" -o "$FACELIB_DIR/parsing_parsenet.pth"
+cp weights/facelib/*.pth "$FACELIB_DIR/" 2>/dev/null || true
 
-# CodeFormer — clone repo & download weights
+# CodeFormer repo (source code only, no weights download script needed)
 if [ ! -d "third_party/CodeFormer" ]; then
     mkdir -p third_party
     git clone --depth 1 https://github.com/sczhou/CodeFormer.git third_party/CodeFormer
-fi
-
-if [ ! -f "weights/codeformer.pth" ]; then
     cd third_party/CodeFormer
     pip install -r requirements.txt -q
-    python scripts/download_pretrained_models.py CodeFormer
-    python scripts/download_pretrained_models.py facelib
+    # Sync codeformer.pth into repo weights dir (used by inference_codeformer.py)
+    mkdir -p weights/CodeFormer weights/facelib
+    cp ../../weights/codeformer.pth weights/CodeFormer/codeformer.pth
+    cp ../../weights/facelib/*.pth weights/facelib/ 2>/dev/null || true
     cd ../..
-    cp third_party/CodeFormer/weights/CodeFormer/codeformer.pth weights/codeformer.pth
-    mkdir -p weights/facelib
-    cp third_party/CodeFormer/weights/facelib/*.pth weights/facelib/ 2>/dev/null || true
+elif [ ! -f "third_party/CodeFormer/weights/CodeFormer/codeformer.pth" ]; then
+    mkdir -p third_party/CodeFormer/weights/CodeFormer third_party/CodeFormer/weights/facelib
+    cp weights/codeformer.pth third_party/CodeFormer/weights/CodeFormer/codeformer.pth
+    cp weights/facelib/*.pth third_party/CodeFormer/weights/facelib/ 2>/dev/null || true
 fi
 
 echo "=== [5/5] Setup complete! Run: python app.py ==="

@@ -9,14 +9,39 @@ echo "=== [1/5] Installing Python dependencies ==="
 # Install PyTorch with CUDA first
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118 -q
 
-# Install gradio stack (pins gradio-client which drags in old huggingface-hub)
+# Install gradio stack
 pip install "gradio==4.44.1" "gradio-client==1.3.0" "starlette<0.38.0" "fastapi<0.113.0" -q
 
-# Force reinstall huggingface-hub to a version that satisfies BOTH gradio and transformers
-pip install "huggingface_hub>=1.5.0" -q --force-reinstall
+# Patch gradio/oauth.py: HfFolder was removed in huggingface_hub >= 1.0
+python - <<'PYEOF'
+import pathlib, importlib.util
+spec = importlib.util.find_spec('gradio')
+if spec:
+    oauth_path = pathlib.Path(spec.origin).parent / 'oauth.py'
+    if oauth_path.exists():
+        src = oauth_path.read_text()
+        old = 'from huggingface_hub import HfFolder, whoami'
+        new = (
+            'try:\n'
+            '    from huggingface_hub import HfFolder, whoami\n'
+            'except ImportError:\n'
+            '    from huggingface_hub import whoami\n'
+            '    class HfFolder:\n'
+            '        @staticmethod\n'
+            '        def get_token(): return None\n'
+            '        @staticmethod\n'
+            '        def save_token(token): pass\n'
+            '        @staticmethod\n'
+            '        def delete_token(): pass\n'
+        )
+        if old in src:
+            oauth_path.write_text(src.replace(old, new))
+            print('  gradio oauth.py patched OK')
+        else:
+            print('  oauth.py already patched')
+PYEOF
 
-# Install remaining deps
-pip install gradio-image-prompter==0.1.0 -q
+# Install remaining deps (no gradio-image-prompter on Lightning)
 pip install facexlib basicsr realesrgan gfpgan -q
 pip install numpy opencv-python-headless Pillow scikit-image requests tqdm pyyaml scipy addict future lmdb setuptools ffmpeg-python psutil -q
 

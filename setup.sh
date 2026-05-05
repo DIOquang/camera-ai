@@ -50,25 +50,8 @@ cd basicsr-1.4.2
 pip install -e . -q
 cd ..
 
-echo "=== [3/5] Patching gradio_client for Python 3.13 compatibility ==="
-UTILS=$(python -c "import gradio_client.utils as u; import inspect; print(inspect.getfile(u))")
-# Patch get_type to handle bool schema
-python - <<'PYEOF'
-import re, pathlib
-path = pathlib.Path(__import__('gradio_client').utils.__file__)
-src = path.read_text()
-old = "def get_type(schema: dict):\n    if \"const\" in schema:"
-new = "def get_type(schema: dict):\n    if isinstance(schema, bool):\n        return \"Any\"\n    if \"const\" in schema:"
-if old in src:
-    path.write_text(src.replace(old, new))
-    print("  get_type patched OK")
-old2 = "    if schema == {}:\n        return \"Any\""
-new2 = "    if isinstance(schema, bool) or schema == {}:\n        return \"Any\""
-src = path.read_text()
-if old2 in src:
-    path.write_text(src.replace(old2, new2))
-    print("  _json_schema_to_python_type patched OK")
-PYEOF
+echo "=== [3/5] Patching Gradio for compatibility ==="
+python patch_gradio.py
 
 echo "=== [4/5] Downloading model weights ==="
 mkdir -p weights weights/CodeFormer weights/facelib

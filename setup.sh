@@ -73,18 +73,21 @@ PYEOF
 echo "=== [4/5] Downloading model weights ==="
 mkdir -p weights weights/CodeFormer weights/facelib
 
+# Helper: check if file is a real binary (>1MB), not an LFS pointer
+is_real_weight() { [ -f "$1" ] && [ "$(wc -c < "$1")" -gt 1048576 ]; }
+
 # RealESRGAN
-[ -f weights/RealESRGAN_x2.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth" -o weights/RealESRGAN_x2.pth --progress-bar
-[ -f weights/RealESRGAN_x4.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth" -o weights/RealESRGAN_x4.pth --progress-bar
-[ -f weights/RealESRGAN_x8.pth ] || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x8.pth" -o weights/RealESRGAN_x8.pth --progress-bar
+is_real_weight weights/RealESRGAN_x2.pth || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth" -o weights/RealESRGAN_x2.pth --progress-bar
+is_real_weight weights/RealESRGAN_x4.pth || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth" -o weights/RealESRGAN_x4.pth --progress-bar
+is_real_weight weights/RealESRGAN_x8.pth || curl -L "https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x8.pth" -o weights/RealESRGAN_x8.pth --progress-bar
 
-# CodeFormer weights — download directly (no Python script needed)
-[ -f weights/codeformer.pth ] || curl -L "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth" -o weights/codeformer.pth --progress-bar
+# CodeFormer weights
+is_real_weight weights/codeformer.pth || curl -L "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth" -o weights/codeformer.pth --progress-bar
 
-# facelib weights (for CodeFormer & RetinaFace)
-[ -f weights/facelib/detection_Resnet50_Final.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth" -o weights/facelib/detection_Resnet50_Final.pth --progress-bar
-[ -f weights/facelib/parsing_parsenet.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth" -o weights/facelib/parsing_parsenet.pth --progress-bar
-[ -f weights/facelib/detection_mobilenet0.25_Final.pth ] || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_mobilenet0.25_Final.pth" -o weights/facelib/detection_mobilenet0.25_Final.pth --progress-bar
+# facelib weights
+is_real_weight weights/facelib/detection_Resnet50_Final.pth || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth" -o weights/facelib/detection_Resnet50_Final.pth --progress-bar
+is_real_weight weights/facelib/parsing_parsenet.pth || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth" -o weights/facelib/parsing_parsenet.pth --progress-bar
+is_real_weight weights/facelib/detection_mobilenet0.25_Final.pth || curl -L "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_mobilenet0.25_Final.pth" -o weights/facelib/detection_mobilenet0.25_Final.pth --progress-bar
 
 # Copy facelib weights to facexlib package dir so it can find them at runtime
 FACELIB_DIR=$(python -c "import facexlib, os; print(os.path.join(os.path.dirname(facexlib.__file__), 'weights'))")

@@ -6,13 +6,25 @@ import tempfile
 import numpy as np
 import tqdm
 import ffmpeg
-import spaces
+try:
+    import spaces
+except ModuleNotFoundError:
+    class _SpacesShim:
+        @staticmethod
+        def GPU(duration=None):
+            # Local fallback when Hugging Face Spaces runtime is unavailable.
+            def _decorator(func):
+                return func
+
+            return _decorator
+
+    spaces = _SpacesShim()
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 @spaces.GPU(duration=60)
-def infer_image(img: Image.Image, size_modifier: int ) -> Image.Image:
+def infer_image(img, size_modifier):
     if img is None:
         raise Exception("Image not uploaded")
     
